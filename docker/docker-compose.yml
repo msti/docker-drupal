@@ -1,0 +1,37 @@
+web:
+  image: msti/drupal
+  container_name: drupal
+  links:
+    - db:mysqlhost
+    - mailcatcher:mailcatcher
+  ports:
+    - 8080:80
+  volumes:
+    - ../www:/var/www/html
+    - ./cron/cron.txt:/var/spool/cron/crontabs/root
+  environment:
+    NULLMAILER_REMOTE: mailcatcher
+db:
+  image: mariadb
+  container_name: db
+  volumes:
+    - /var/lib/mysql/mustvisits:/var/lib/mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: drupal
+    MYSQL_USER: drupal
+    MYSQL_PASSWORD: drupal
+phpmyadmin:
+  image: nazarpc/phpmyadmin
+  container_name: phpmyadmin
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+  ports:
+    - 8081:80
+  links:
+    - db:mysql
+mailcatcher:
+  image: zolweb/docker-mailcatcher
+  container_name: mailcatcher
+  ports:
+    - 9999:1080
