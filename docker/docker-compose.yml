@@ -15,7 +15,7 @@ db:
   image: mariadb
   container_name: db
   volumes:
-    - /var/lib/mysql/mustvisits:/var/lib/mysql
+    - ../db:/var/lib/mysql
   environment:
     MYSQL_ROOT_PASSWORD: root
     MYSQL_DATABASE: drupal
